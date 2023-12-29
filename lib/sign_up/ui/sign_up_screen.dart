@@ -54,7 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         setState(() {});
                       },
                       controller: _nameController,
-                      hintText: 'Name',
+                      hintText: 'N A M E',
                     ),
                     CustomeTextField(
                       // keys: _formKey,
@@ -69,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onChange: (value) {
                         setState(() {});
                       },
-                      hintText: 'email',
+                      hintText: 'E M A I L',
                     ),
                     CustomeTextField(
                       prefixIcon: Icons.password,
@@ -87,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       inputType: TextInputType.visiblePassword,
                       obscureText: true,
                       controller: _passwordController,
-                      hintText: 'Password',
+                      hintText: 'P A S S W O R D',
                     ),
                     // SizedBox(height: 10),
                     CustomButton(
@@ -116,12 +116,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                           .trim(),
                                                     )));
                                         showSnakbar(
-                                            'Sucessfully done!', context,
-                                            color: Colors.green);
-                                      } else {
-                                        showSnakbar('Something to going wrong!',
+                                            'S u c e s s f u l l y  d o n e !'
+                                                .toUpperCase(),
                                             context,
-                                            color: Colors.red);
+                                            color: Colors.deepPurple
+                                                .withOpacity(.3));
+                                      } else {
+                                        showSnakbar(
+                                            'S o m e t h i n g  t o  g o i ng   w r o n g !'
+                                                .toUpperCase(),
+                                            context,
+                                            color: Colors.red.withOpacity(.5));
                                       }
                                     },
                     ),

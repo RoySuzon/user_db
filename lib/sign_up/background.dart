@@ -17,6 +17,7 @@ class CustomeBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.transparent,
       // extendBody: true,
       // resizeToAvoidBottomInset: false,
       // resizeToAvoidBottomInset: false,

@@ -8,6 +8,10 @@ class CustomeTextField extends StatelessWidget {
   final bool? obscureText;
   final TextInputType? inputType;
   final Function(String? value)? onChange;
+
+  final int? maxLength;
+
+  final double? witdh;
   // final T
 
   CustomeTextField({
@@ -20,23 +24,25 @@ class CustomeTextField extends StatelessWidget {
     this.obscureText,
     this.inputType,
     this.onChange,
+    this.maxLength,
+    this.witdh,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: witdh ?? 16),
       child: TextFormField(
         style: TextStyle(color: Color(0xff33186B)),
-
-        cursorHeight: 10,
+        maxLength: maxLength,
+        // cursorHeight: 10,
         obscureText: obscureText ?? false,
         validator: validator,
         keyboardType: inputType,
 
         onChanged: onChange,
         // selectionHeightStyle: ui.BoxHeightStyle.tight,
-        // keyboardAppearance: Brightness.dark,
+        keyboardAppearance: Brightness.dark,
         // autofocus: true,
         // onChanged: (value) {
         //   keys != null ? keys!.currentState!.validate() : null;

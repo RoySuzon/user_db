@@ -27,6 +27,8 @@ class _SteperOnseScreenState extends State<SteperOnseScreen> {
   final _mobileController = TextEditingController();
   String? imgPath;
 
+  List<String> listMobile = [];
+  List listOfblood = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
   _getImage() async {
     final _piker = await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -46,9 +48,9 @@ class _SteperOnseScreenState extends State<SteperOnseScreen> {
       // ),
       body: SafeArea(
         child: Align(
-          alignment: Alignment.topCenter,
+          alignment: Alignment.center,
           child: SingleChildScrollView(
-            // reverse: true,
+            reverse: true,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -93,7 +95,7 @@ class _SteperOnseScreenState extends State<SteperOnseScreen> {
 
                   CustomeTextField(
                     controller: _adressController,
-                    hintText: "Adress",
+                    hintText: "A D D R E S S",
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,15 +149,63 @@ class _SteperOnseScreenState extends State<SteperOnseScreen> {
                                       onPressed: () {
                                         _mobileController.text =
                                             listMobile[index];
-                                        customeModalBottomSheet(
-                                            context,
-                                            _mobileController,
-                                            'U P D A T E', onTap: () {
-                                          listMobile[index] =
-                                              _mobileController.text.trim();
-                                          Navigator.pop(context);
-                                          setState(() {});
-                                        });
+
+                                        customeAlertDialog(
+                                          context,
+                                          title: 'U P D A T E',
+                                          onPressed: () {
+                                            listMobile.removeAt(index);
+                                            Navigator.pop(context);
+                                            showSnakbar(
+                                                'R E M O V E D  T H E P H O N E  N O',
+                                                context,
+                                                color: Colors.deepPurple
+                                                    .withOpacity(.3));
+                                            setState(() {});
+                                          },
+                                          onTap: () {
+                                            if (_mobileController.text
+                                                    .trim()
+                                                    .length <
+                                                10) return;
+
+                                            listMobile[index] =
+                                                _mobileController.text.trim();
+                                            Navigator.pop(context);
+                                            showSnakbar('U P D A T E', context,
+                                                color: Colors.deepPurple
+                                                    .withOpacity(.3));
+                                            setState(() {});
+                                          },
+                                          controller: _mobileController,
+                                        );
+                                        // showModalBottomSheet(
+                                        //   context: context,
+                                        //   builder: (context) => Padding(
+                                        //     padding: const EdgeInsets.all(16),
+                                        //     child: Column(
+                                        //       mainAxisAlignment:
+                                        //           MainAxisAlignment
+                                        //               .spaceBetween,
+                                        //       children: [
+                                        //         CustomeTextField(
+                                        //           controller: _mobileController,
+                                        //           hintText: "+8801722-----",
+                                        //         ),
+                                        //         CustomButton(
+                                        //           'U P D A T E',
+                                        //           onTap: () {
+                                        //             listMobile[index] =
+                                        //                 _mobileController.text
+                                        //                     .trim();
+                                        //             Navigator.pop(context);
+                                        //             setState(() {});
+                                        //           },
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // );
                                       },
                                       label: Text(
                                         "${index + 1}.  ${listMobile[index]}",
@@ -176,23 +226,34 @@ class _SteperOnseScreenState extends State<SteperOnseScreen> {
                                   //     : null;
                                   if (listMobile.length > 2) return;
                                   setState(() {
-                                    customeModalBottomSheet(
-                                        context, _mobileController, 'A D D',
-                                        onTap: () {
-                                      if (_mobileController.text
-                                          .trim()
-                                          .isEmpty) {
-                                        Navigator.pop(context);
-                                        showSnakbar('Error', context,
-                                            color: Colors.red);
-                                        return;
-                                      }
+                                    customeAlertDialog(
+                                      context,
+                                      title: 'A D D',
+                                      onTap: () {
+                                        if (_mobileController.text
+                                                .trim()
+                                                .length <
+                                            10) {
+                                          Navigator.pop(context);
+                                          showSnakbar('E R R O R', context,
+                                              color: Colors.red);
+                                          return;
+                                        }
 
-                                      listMobile
-                                          .add(_mobileController.text.trim());
-                                      Navigator.pop(context);
-                                      setState(() {});
-                                    });
+                                        listMobile
+                                            .add(_mobileController.text.trim());
+                                        Navigator.pop(context);
+                                        setState(() {});
+                                      },
+                                      controller: _mobileController,
+                                    );
+                                    // showModalBottomSheet(
+                                    //   context: context,
+                                    //   builder: (context) => Padding(
+                                    //     padding: const EdgeInsets.all(16),
+                                    //     child: ,
+                                    //   ),
+                                    // );
                                   });
                                 }
                               : null,
@@ -218,24 +279,36 @@ class _SteperOnseScreenState extends State<SteperOnseScreen> {
                   CustomButton(
                     'S A V E  U S E R',
                     onTap: () async {
-                      UserModel data = UserModel(
-                          // id: int.parse(DateTime.timestamp().toString()),
-                          adress: _adressController.text.trim(),
-                          blood: bloodGroup == null ? null : bloodGroup,
-                          email: widget.email,
-                          img: imgPath == null
-                              ? "assets/young-man.png"
-                              : imgPath,
-                          name: widget.name,
-                          password: widget.password,
-                          phone: listMobile.toList());
-                      await box.add(data);
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
-                          ),
-                          (route) => false);
+                      try {
+                        int id = DateTime.timestamp().microsecondsSinceEpoch;
+                        UserModel data = UserModel(
+                            id: DateTime.timestamp().microsecondsSinceEpoch,
+                            adress: _adressController.text.trim(),
+                            blood: bloodGroup,
+                            email: widget.email,
+                            img: imgPath ?? "assets/young-man.png",
+                            name: widget.name,
+                            password: widget.password,
+                            phone: listMobile.toList());
+                        await box
+                            .put(
+                                DateTime.timestamp()
+                                    .microsecondsSinceEpoch
+                                    .toString(),
+                                data)
+                            .then((value) => showSnakbar(
+                                "S U C C E S S F U L Y  C R E A T  U S E R",
+                                context,
+                                color: Colors.deepPurple.withOpacity(.3)));
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                            (route) => false);
+                      } catch (e) {
+                        showSnakbar('E R R O R\n ${e}', context);
+                      }
                     },
                   )
                 ],
@@ -312,9 +385,6 @@ Future<dynamic> customeModalBottomSheet(
   );
 }
 
-List<String> listMobile = [];
-List listOfblood = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
-
 class CustomeCard extends StatelessWidget {
   const CustomeCard({super.key, required this.child});
 
@@ -340,6 +410,37 @@ class CustomeCard extends StatelessWidget {
 
 // bool favorite = false;
 
-
-
-
+Future<dynamic> customeAlertDialog(BuildContext context,
+    {required String title,
+    required VoidCallback onTap,
+    VoidCallback? onPressed,
+    required TextEditingController controller}) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomeTextField(
+                maxLength: 14,
+                inputType: TextInputType.phone,
+                controller: controller,
+                hintText: "+8801722-----",
+              ),
+            ],
+          )
+        ],
+      ),
+      actions: [
+        onPressed != null
+            ? CustomButton('C L E A R', onTap: onPressed)
+            : SizedBox(),
+        onPressed != null ? SizedBox(height: 12) : SizedBox(),
+        CustomButton(title, onTap: onTap),
+      ],
+    ),
+  );
+}
