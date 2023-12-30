@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:user_db/sign_up/background.dart';
 import 'package:user_db/user_list/models/user_model.dart';
+
+const String defaultImage = "assets/young-man.png";
 
 class DetailsScreen extends StatelessWidget {
   DetailsScreen({super.key, required this.userModel, required this.index});
@@ -21,12 +25,19 @@ class DetailsScreen extends StatelessWidget {
               ClipOval(
                 child: Hero(
                   tag: index,
-                  child: Image.asset(
-                    userModel.img.toString(),
-                    fit: BoxFit.cover,
-                    height: 200,
-                    width: 200,
-                  ),
+                  child: userModel.img != null
+                      ? Image.file(
+                          File(userModel.img.toString()),
+                          fit: BoxFit.cover,
+                          height: 200,
+                          width: 200,
+                        )
+                      : Image.asset(
+                          defaultImage,
+                          fit: BoxFit.cover,
+                          height: 200,
+                          width: 200,
+                        ),
                 ),
               ),
               Padding(
@@ -40,9 +51,11 @@ class DetailsScreen extends StatelessWidget {
                 children: List.generate(
                     userModel.phone!.length,
                     (index) => Card(
-                          child: ListTile(
-                            title: Text(userModel.phone![index]),
-                          ),
+                          child: ExpansionTile(
+                              children: [ListTile()],
+                              title: Text(
+                                userModel.phone![index],
+                              )),
                         )),
               )
             ],

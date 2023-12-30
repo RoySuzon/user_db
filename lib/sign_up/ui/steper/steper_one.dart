@@ -286,7 +286,7 @@ class _SteperOnseScreenState extends State<SteperOnseScreen> {
                             adress: _adressController.text.trim(),
                             blood: bloodGroup,
                             email: widget.email,
-                            img: imgPath ?? "assets/young-man.png",
+                            img: imgPath,
                             name: widget.name,
                             password: widget.password,
                             phone: listMobile.toList());

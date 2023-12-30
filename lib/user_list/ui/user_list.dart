@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:user_db/details/ui/details_screen.dart';
@@ -100,12 +102,19 @@ class _UserListScreenState extends State<UserListScreen> {
                             leading: ClipOval(
                               child: Hero(
                                 tag: index,
-                                child: Image.asset(
-                                  user.img.toString(),
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: user.img != null
+                                    ? Image.file(
+                                        File(user.img.toString()),
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        defaultImage,
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                             ),
                             // initiallyExpanded: true,
@@ -204,12 +213,19 @@ class _UserListScreenState extends State<UserListScreen> {
                             leading: ClipOval(
                               child: Hero(
                                 tag: index,
-                                child: Image.asset(
-                                  user.img.toString(),
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: user.img != null
+                                    ? Image.file(
+                                        File(user.img.toString()),
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        defaultImage,
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                             ),
                             // initiallyExpanded: true,
